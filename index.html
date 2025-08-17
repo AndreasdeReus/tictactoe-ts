@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Tic Tac Toe - TypeScript</title>
+    <link rel="stylesheet" href="/src/ui/style.css">
+    <link rel="icon" type="image/png" href="https://cdn-icons-png.flaticon.com/512/10199/10199746.png" />
+</head>
+
+<body style="background-color:rgb(95, 163, 187);">
+    <div class="board" id="board"></div>
+    <label for="difficultySelect">Difficulty:</label>
+    <select id="difficultySelect" aria-label="AI difficulty">
+        <option value="noAI">No AI</option>
+        <option value="easy">Easy</option>
+        <option value="medium">Medium</option>
+        <option value="hard">Hard</option>
+        <option value="impossible">Impossible</option>
+    </select>
+    <div id="statusMessage" class="status-message" aria-live="polite"></div>
+    <button type="button" id="resetButton" tabindex="0">Restart Game</button>
+    <script type="module" src="/src/main.ts"></script>
+</body>
+
+</html>
