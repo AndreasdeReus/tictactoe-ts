@@ -11,21 +11,17 @@ import type { GameState, Difficulty, EvaluateBoardResult, Player } from '../type
 
 let gameState: GameState = {
   cells: Array(9).fill(''),
-  currentPlayer: Math.random() > 0.5 ? 'X' : 'O', //'X', // Starting player
+  currentPlayer: Math.random() > 0.5 ? 'X' : 'O', // Starting player
   isGameOver: false, 
   difficulty: 'noAI' // Default difficulty
 };
 
-let AIPlayer: Player;
+let AIPlayer: Player | null;
 
 
 export function setupGame(): void {
   resetGame();
 }
-
-/* export function showGameState(): Readonly<GameState> {
-  return gameState;
-} */
 
 export function setDifficulty(d : Difficulty): void {
   gameState.difficulty = d;
@@ -37,7 +33,7 @@ export function resetGame() {
   gameState.isGameOver = false;
   if (gameState.difficulty != "noAI"){
     AIPlayer = (gameState.currentPlayer === 'X') ? 'O' : 'X';
-  }
+  } else AIPlayer = null; 
   renderBoard(cells);
   renderStatusMessage(showTurnMessage(gameState.currentPlayer));
 }
@@ -61,7 +57,9 @@ export function makeMove(index: number): boolean {
       winningLine: boardResult.winningLine,
       disableBoard: true 
     });
-    renderStatusMessage(showWinMessage(boardResult.winner));
+    if (gameState.currentPlayer === AIPlayer){
+      renderStatusMessage("AI wins");
+    } else renderStatusMessage(showWinMessage(boardResult.winner));
   } else if (boardResult.isDraw) {
     gameState.isGameOver = true; 
     renderBoard(gameState.cells, {disableBoard: true});
@@ -80,7 +78,6 @@ export function makeMove(index: number): boolean {
     if (gameState.difficulty != "noAI" && AIPlayer == gameState.currentPlayer){
       const opponent = (gameState.currentPlayer === 'X' ? 'O' : 'X');
       const aiMoveIndex = getAIMove(gameState.cells, gameState.difficulty, opponent, AIPlayer);
-      console.log("Current AI player:" + AIPlayer +"AImove: "+aiMoveIndex)
       if (aiMoveIndex  !== -1) {
         setTimeout(() => makeMove(aiMoveIndex),450);
       }

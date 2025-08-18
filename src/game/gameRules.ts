@@ -28,6 +28,10 @@ export function checkDraw(cells: Cell[]): boolean {
   return cells.every(cell => cell !== ''); 
 }
 
+export function getEmptyCells(cells: Cell[]): number[]{
+  return cells.map((cell, index) => cell === '' ? index : -1).filter(index => index !== -1);
+}
+
 export function evaluateBoard(cells: Cell[]): EvaluateBoardResult{
   const [winner, winningLine]= checkWinner(cells);
   const isDraw = false;

@@ -33,3 +33,8 @@ export interface EvaluateBoardResult {
     // additional properties can be added as needed
     // e.g. score: number;
 }
+
+export interface MiniMaxResult {
+    move: number;
+    score: number;
+}

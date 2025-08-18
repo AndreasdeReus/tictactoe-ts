@@ -6,7 +6,7 @@ export function showDrawMessage(): string {
 }
 
 export function showWinMessage(player: Player): string {
-  const msg = `${player} wins!`
+  const msg = `Player ${player} wins!`
   return msg;
 }
 
