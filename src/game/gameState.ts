@@ -8,12 +8,14 @@ import { evaluateBoard } from './gameRules';
 import { showAITurnMessage, showDrawMessage, showTurnMessage, showWinMessage } from '../ui/messages';
 import { getAIMove } from './bot';
 import type { GameState, Difficulty, EvaluateBoardResult, Player } from '../types/types';
+import { disableClickListener, enableClickListener } from '../ui/events';
 
 let gameState: GameState = {
   cells: Array(9).fill(''),
-  currentPlayer: Math.random() > 0.5 ? 'X' : 'O', // Starting player
+  currentPlayer: 'X', // Starting player
   isGameOver: false, 
-  difficulty: 'noAI' // Default difficulty
+  difficulty: 'noAI', // Default difficulty
+  cheatsEnabled: false
 };
 
 let AIPlayer: Player | null;
@@ -29,10 +31,14 @@ export function setDifficulty(d : Difficulty): void {
 
 export function resetGame() {
   const cells = gameState.cells = Array(9).fill('');
-  gameState.currentPlayer = Math.random() > 0.5 ? 'X' : 'O';
   gameState.isGameOver = false;
+  gameState.currentPlayer = 'X'
   if (gameState.difficulty != "noAI"){
-    AIPlayer = (gameState.currentPlayer === 'X') ? 'O' : 'X';
+    const human = Math.random() > 0.25 ? gameState.currentPlayer : getOpponent(gameState.currentPlayer);
+    AIPlayer = getOpponent(human);
+    if (gameState.currentPlayer === AIPlayer){
+      makeMove(getAIMove(gameState.cells, gameState.difficulty, human, AIPlayer));
+    }
   } else AIPlayer = null; 
   renderBoard(cells);
   renderStatusMessage(showTurnMessage(gameState.currentPlayer));
@@ -66,8 +72,7 @@ export function makeMove(index: number): boolean {
     renderStatusMessage(showDrawMessage());
   } else {
     // Switch players
-    gameState.currentPlayer = gameState.currentPlayer === 'X' ? 'O' : 'X';
-    console.log("Gamestate diff: "+gameState.difficulty);
+    gameState.currentPlayer = getOpponent(gameState.currentPlayer);
     renderBoard(gameState.cells);
     if (gameState.currentPlayer === AIPlayer){
        renderStatusMessage(showAITurnMessage());
@@ -76,13 +81,32 @@ export function makeMove(index: number): boolean {
     }
     // AI move
     if (gameState.difficulty != "noAI" && AIPlayer == gameState.currentPlayer){
-      const opponent = (gameState.currentPlayer === 'X' ? 'O' : 'X');
-      const aiMoveIndex = getAIMove(gameState.cells, gameState.difficulty, opponent, AIPlayer);
+      const human = getOpponent(gameState.currentPlayer);
+      const aiMoveIndex = getAIMove(gameState.cells, gameState.difficulty, human, AIPlayer);
       if (aiMoveIndex  !== -1) {
         setTimeout(() => makeMove(aiMoveIndex),450);
+      }
+      if (!gameState.cheatsEnabled){
+        disableClickListener();
+        setTimeout(() => enableClickListener(), 500);
+        console.log(gameState.cheatsEnabled);
       }
     }
   }
 
   return true;
 }
+
+function getOpponent(player: Player): Player{
+  return player === 'X' ? 'O' : 'X';
+}
+
+export function setCheatsEnabled(enabled: boolean) {
+  gameState.cheatsEnabled = enabled;
+}
+
+(window as any).boardOptions = {
+    setCheatsEnabled,
+    resetGame,
+    setDifficulty,
+};

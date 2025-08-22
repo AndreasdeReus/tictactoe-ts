@@ -41,10 +41,10 @@ A structured checklist to guide the development of your TypeScript-based Tic Tac
 
 ## 🤖 Phase 5: AI Opponent
 
-- [ ] `game/bot.ts` – implement easy AI (random move)
-- [ ] Add difficulty selector to UI
-- [ ] Implement medium AI (win/block logic)
-- [ ] Implement hard AI using Minimax algorithm
+- [x] `game/bot.ts` – implement easy AI (random move)
+- [x] Add difficulty selector to UI
+- [x] Implement medium AI (win/block logic)
+- [x] Implement hard AI using Minimax algorithm
 
 ---
 

@@ -17,6 +17,7 @@ export interface GameState {
     currentPlayer: Player;
     isGameOver: boolean;
     difficulty: Difficulty;
+    cheatsEnabled: boolean;
     // additional properties can be added as needed
     // e.g. scoreboard and moveHistory: Cell[][];
     // moveHistory: Cell[][];

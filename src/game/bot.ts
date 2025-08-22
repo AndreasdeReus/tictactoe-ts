@@ -8,16 +8,16 @@ bot.ts:
 import { Cell, Difficulty, Player, MiniMaxResult } from '../types/types';
 import { checkDraw, checkWinner, getEmptyCells } from './gameRules';
 
-export function getAIMove(cells: Cell[], difficulty: Difficulty, human: Player, aiPlayer: Player): number {
+export function getAIMove(cells: Cell[], difficulty: Difficulty, opponent: Player, aiPlayer: Player): number {
   switch (difficulty) {
     case 'easy':
       return easyAiMove(cells);
     case 'medium':
-      return mediumAiMove(cells, human);
+      return mediumAiMove(cells, opponent);
     case 'hard':
-      return hardAiMove(cells, human, aiPlayer);
+      return hardAiMove(cells, opponent, aiPlayer);
     case 'impossible':
-      return impossibleAiMove(cells, human, aiPlayer);
+      return impossibleAiMove(cells, opponent, aiPlayer);
     default:
       throw new Error(`Unknown difficulty: ${difficulty}`);
   }
@@ -32,7 +32,7 @@ function getRandomMove(cells: Cell[]): number {
 }
 
 function getBestMove(cells: Cell[], opponent: Player): number {
-  // check for blocking move
+  // check for blocking or winning move
   const winningCombinations = [
     [0, 1, 2],
     [3, 4, 5],
@@ -56,14 +56,14 @@ function getBestMove(cells: Cell[], opponent: Player): number {
   return -1;
 }
 
-function getMinimaxMove(cells: Cell[], human: Player, aiPlayer: Player): number{
+function getMinimaxMove(cells: Cell[], opponent: Player, aiPlayer: Player): number{
   // start minimax algorithm
   const emptyCells = getEmptyCells(cells);
   if (emptyCells.length === 0){
     return -1;
   }
   const depth = 0;
-  const { move } = minimax(cells, depth, true, human, aiPlayer);
+  const { move } = minimax(cells, depth, true, opponent, aiPlayer);
   return move;
 }
 
@@ -71,10 +71,10 @@ function minimax(
   cells: Cell[],
   depth: number,
   isMaximizing: boolean,
-  human: Player,
+  opponent: Player,
   aiPlayer: Player
 ): MiniMaxResult{ 
-    const currScore = terminalScore(cells, depth, human, aiPlayer);
+    const currScore = terminalScore(cells, depth, opponent, aiPlayer);
     if(currScore !== null){
       return { move: -1, score: currScore }
     }
@@ -83,7 +83,7 @@ function minimax(
       let best = {move: -1, score: -Infinity}
       for(const idx of moves){
         applyMove(cells, idx, aiPlayer);
-        const child = minimax(cells, depth+1, false, human, aiPlayer);
+        const child = minimax(cells, depth+1, false, opponent, aiPlayer);
         undoMove(cells, idx); 
         if (child.score > best.score){
           best = { move: idx, score: child.score }
@@ -93,8 +93,8 @@ function minimax(
     } else {
       let best = {move: -1, score: +Infinity}
       for(const idx of moves){
-        applyMove(cells, idx, human);
-        const child = minimax(cells, depth+1, true, human, aiPlayer);
+        applyMove(cells, idx, opponent);
+        const child = minimax(cells, depth+1, true, opponent, aiPlayer);
         undoMove(cells, idx); 
         if (child.score < best.score){
           best = { move: idx, score:child.score };
@@ -104,12 +104,12 @@ function minimax(
     }
 }
 
-function terminalScore(cells: Cell[], depth: number, human: Player, aiPlayer: Player): number | null {
+function terminalScore(cells: Cell[], depth: number, opponent: Player, aiPlayer: Player): number | null {
   const [winner, winningLine ] = checkWinner(cells) 
   if(winner){
       if(winner === aiPlayer){
         return 10 - depth
-      }else if(winner === human){
+      }else if(winner === opponent){
         return depth - 10;
       }
   }else if(checkDraw(cells)){
@@ -151,6 +151,6 @@ function hardAiMove (cells: Cell[], opponent: Player, aiPlayer : Player): number
   return getRandomMove(cells);
 }
 
-function impossibleAiMove (cells: Cell[], human: Player, aiPlayer : Player): number {
-  return getMinimaxMove(cells, human, aiPlayer);
+function impossibleAiMove (cells: Cell[], opponent: Player, aiPlayer : Player): number {
+  return getMinimaxMove(cells, opponent, aiPlayer);
 }
