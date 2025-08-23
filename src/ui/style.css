@@ -4,6 +4,11 @@
     gap: 5px;
 }
 
+.board-disabled {
+    pointer-events: none;
+    opacity: 0.5;
+}
+
 .background {
     /* // TODO Background for page */
     background-color: #0000;
@@ -64,11 +69,6 @@
 
 .status-message.draw {
     color: orange;
-}
-
-.board-disable {
-    pointer-events: none;
-    opacity: 0.5;
 }
 
 .hidden {
