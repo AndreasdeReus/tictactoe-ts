@@ -3,7 +3,7 @@ gameState.ts:
     Board array
     makeMove, resetGame, etc
 */
-import { renderBoard, renderStatusMessage } from '../ui/renderer';
+import { clearStatusMessage, renderBoard, renderStatusMessage } from '../ui/renderer';
 import { evaluateBoard } from './gameRules';
 import { showAITurnMessage, showDrawMessage, showTurnMessage, showWinMessage } from '../ui/messages';
 import { getAIMove } from './bot';
@@ -33,6 +33,7 @@ export function resetGame() {
   const cells = gameState.cells = Array(9).fill('');
   gameState.isGameOver = false;
   gameState.currentPlayer = 'X'
+  clearStatusMessage();
   if (gameState.difficulty != "noAI"){
     const human = Math.random() > 0.25 ? gameState.currentPlayer : getOpponent(gameState.currentPlayer);
     AIPlayer = getOpponent(human);
@@ -64,36 +65,37 @@ export function makeMove(index: number): boolean {
       disableBoard: true 
     });
     if (gameState.currentPlayer === AIPlayer){
-      renderStatusMessage("AI wins");
+      renderStatusMessage({ text: "AI wins", addClass: ""});
     } else renderStatusMessage(showWinMessage(boardResult.winner));
+    return true;
   } else if (boardResult.isDraw) {
     gameState.isGameOver = true; 
     renderBoard(gameState.cells, {disableBoard: true});
     renderStatusMessage(showDrawMessage());
+    return true;
+  } 
+  // Switch players
+  gameState.currentPlayer = getOpponent(gameState.currentPlayer);
+  renderBoard(gameState.cells);
+  if (gameState.currentPlayer === AIPlayer){
+     renderStatusMessage(showAITurnMessage());
   } else {
-    // Switch players
-    gameState.currentPlayer = getOpponent(gameState.currentPlayer);
-    renderBoard(gameState.cells);
-    if (gameState.currentPlayer === AIPlayer){
-       renderStatusMessage(showAITurnMessage());
-    } else {
-       renderStatusMessage(showTurnMessage(gameState.currentPlayer));
+     renderStatusMessage(showTurnMessage(gameState.currentPlayer));
+  }
+  // AI move
+  if (gameState.difficulty != "noAI" && AIPlayer == gameState.currentPlayer){
+    const human = getOpponent(gameState.currentPlayer);
+    const aiMoveIndex = getAIMove(gameState.cells, gameState.difficulty, human, AIPlayer);
+    if (aiMoveIndex  !== -1) {
+      setTimeout(() => makeMove(aiMoveIndex),450);
     }
-    // AI move
-    if (gameState.difficulty != "noAI" && AIPlayer == gameState.currentPlayer){
-      const human = getOpponent(gameState.currentPlayer);
-      const aiMoveIndex = getAIMove(gameState.cells, gameState.difficulty, human, AIPlayer);
-      if (aiMoveIndex  !== -1) {
-        setTimeout(() => makeMove(aiMoveIndex),450);
-      }
-      if (!gameState.cheatsEnabled){
-        disableClickListener();
-        setTimeout(() => enableClickListener(), 500);
-        console.log(gameState.cheatsEnabled);
-      }
+    if (!gameState.cheatsEnabled){
+      disableClickListener();
+      setTimeout(() => enableClickListener(), 500);
+      console.log(gameState.cheatsEnabled);
     }
   }
-
+ 
   return true;
 }
 
@@ -105,7 +107,7 @@ export function setCheatsEnabled(enabled: boolean) {
   gameState.cheatsEnabled = enabled;
 }
 
-(window as any).boardOptions = {
+(window as any).ttt = {
     setCheatsEnabled,
     resetGame,
     setDifficulty,
