@@ -50,10 +50,10 @@ A structured checklist to guide the development of your TypeScript-based Tic Tac
 
 ## 💄 Phase 6: Styling & UX
 
-- [ ] `ui/styles.css` – style the game board and layout
-- [ ] Make layout responsive (grid/flexbox)
-- [ ] Add hover effects and animations
-- [ ] Add light/dark mode toggle
+- [x] `ui/styles.css` – style the game board and layout
+- [x] Make layout responsive (grid/flexbox)
+- [x] Add hover effects and animations
+- [x] Add light/dark mode toggle
 
 ---
 

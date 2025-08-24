@@ -12,6 +12,8 @@ types.ts:
 export type Player = 'X' | 'O';
 export type Cell = '' | Player;
 export type Difficulty = 'easy' | 'medium' | 'hard' | 'impossible' | 'noAI'; // 'noAI' for local multiplayer
+export type Theme = "light" | "dark"; 
+
 export interface GameState {
     cells: Cell[];
     currentPlayer: Player;
@@ -27,6 +29,7 @@ export interface RenderOptions {
     disableBoard?: boolean,
     highlightedCells?: number[] // future for highlighting ai moves
 }
+
 export interface EvaluateBoardResult {
     winner: Player | null;
     isDraw: boolean;
