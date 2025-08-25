@@ -1,76 +1,167 @@
+/* ---- Design tokens ---- */
+:root {
+    --space-1: .5rem;
+    --space-2: .75rem;
+    --space-3: 1rem;
+
+    --radius: .5rem;
+
+    --color-bg: #f8fafc;
+    --color-surface: #ffffff;
+    --color-text: #111827;
+    --color-border: #111827;
+    --color-accent: #e4f075;
+    --color-win: #fff29a;
+    --color-highlight: #ffd7c2;
+    --color-draw-text: #f59e0b;
+    --color-win-text: #16a34a;
+}
+
+/* Page frame */
+.app {
+    min-height: 100svh;
+    display: grid;
+    place-items: center;
+    gap: var(--space-3);
+    background: var(--color-bg);
+    padding: var(--space-3);
+    color: var(--color-text);
+}
+
+/* Controls row */
+.controls {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    flex-wrap: wrap;
+    max-width: 42rem;
+    width: 100%;
+    justify-content: center;
+}
+
+.control {
+    display: flex;
+    align-items: center;
+    gap: .5rem;
+}
+
+/* Board: responsive 3×3 grid */
 .board {
     display: grid;
-    grid-template-columns: repeat(3, 100px);
-    gap: 5px;
+    grid-template-columns: repeat(3, minmax(80px, 1fr));
+    gap: var(--space-2);
+    width: min(90vmin, 420px);
+    pointer-events: auto;
 }
 
-.board-disabled {
+.board[aria-disabled="true"] {
     pointer-events: none;
-    opacity: 0.5;
+    opacity: .6;
 }
 
-.background {
-    /* // TODO Background for page */
-    background-color: #0000;
-    /*rgb(95, 163, 187);*/
-    padding: 20px;
-    text-align: center;
-}
-
+/* Cells: true squares */
 .cell {
-    width: 100px;
-    height: 100px;
-    font-size: 2rem;
-    text-align: center;
-    line-height: 100px;
-    border: 1px solid black;
+    aspect-ratio: 1 / 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    font-size: clamp(1.8rem, 10vmin, 4rem);
+    font-weight: 700;
+
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius);
     cursor: pointer;
-    background-color: white;
-    transition: background-color 0.3s ease;
+    transition: background-color .2s ease, transform .15s ease;
+}
+
+.cell:active {
+    transform: scale(.98);
 }
 
 .cell:hover {
-    background-color: #e4f075;
-    opacity: 0.8;
-    /* Slightly transparent on hover */
-    /* Hover feedback */
+    background: var(--color-accent);
 }
 
 .cell:focus {
-    outline: 3px solid blue;
-    /* Keyboard focus indicator */
+    outline: 3px solid #2563eb;
+    outline-offset: 2px;
 }
 
-.resetButton {
-    margin-top: 20px;
-    padding: 10px 20px;
-    font-size: 1rem;
-    border: 1px solid black;
-    cursor: pointer;
-}
-
+/* Game states */
 .cell-win {
-    background-color: yellow;
+    background: var(--color-win);
 }
 
 .cell-highlight {
-    background-color: lightsalmon;
+    background: var(--color-highlight);
 }
 
+/* Status */
 .status-message {
-    margin-top: 20px;
-    font-size: 1.5rem;
-    color: green;
-}
-
-.status-message.win {
-    color: green;
+    font-size: clamp(1.8rem, 2.5vmin, 1.25rem);
+    color: var(--color-win-text);
+    margin-right: auto;
 }
 
 .status-message.draw {
-    color: orange;
+    color: var(--color-draw-text);
 }
 
-.hidden {
-    display: none;
+.status-message.turn {
+    color: var(--color-text);
+}
+
+/* Buttons */
+.roundedButton {
+    padding: .6rem 1rem;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius);
+    background: var(--color-surface);
+    color: var(--color-text);
+    cursor: pointer;
+}
+
+/* Small screens: stack controls vertically */
+@media (max-width: 420px) {
+    .controls {
+        flex-direction: column;
+        align-items: stretch;
+    }
+}
+
+/* Accessibility: reduced motion */
+@media (prefers-reduced-motion: reduce) {
+    * {
+        transition: none !important;
+    }
+}
+
+/* Auto-respect user preference */
+@media (prefers-color-scheme: dark) {
+    :root {
+        --color-bg: #0b1220;
+        --color-surface: #151b2b;
+        --color-text: #e5e7eb;
+        --color-border: #94a3b8;
+        --color-accent: #1f2a44;
+        --color-win: #2f3a20;
+        --color-highlight: #3a1f1a;
+        --color-draw: #fbbf24;
+        --color-win-text: #22c55e;
+    }
+}
+
+/* Manual override via attribute */
+body[data-theme="dark"] {
+    --color-bg: #0b1220;
+    --color-surface: #151b2b;
+    --color-text: #e5e7eb;
+    --color-border: #94a3b8;
+    --color-accent: #1f2a44;
+    --color-win: #2f3a20;
+    --color-highlight: #3a1f1a;
+    --color-draw: #fbbf24;
+    --color-win-text: #22c55e;
 }

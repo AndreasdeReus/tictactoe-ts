@@ -13,11 +13,9 @@ export function renderBoard(cells: Cell[], options: RenderOptions = {}) : void {
     throw new Error("Board element not found");
   }
   if (options.disableBoard) {
-    boardElement.setAttribute("ariaboard--disabled", 'true');
-    boardElement.classList.add('board-disabled');
-  } else {
     boardElement.setAttribute("aria-disabled", 'true');
-    boardElement.classList.remove('board-disabled');
+  } else {
+    boardElement.setAttribute("aria-disabled", 'false');
   }
   boardElement.innerHTML = '';
   cells.forEach((val, idx) => {
@@ -36,15 +34,30 @@ export function renderBoard(cells: Cell[], options: RenderOptions = {}) : void {
   }); 
 }
 
-export function renderStatusMessage(text: string): void {
+export function renderStatusMessage({text, addClass} : {text: string, addClass: string}): void {
   const statusMessage = fetchElementById('statusMessage', HTMLDivElement);
   if (!statusMessage) {
     throw new Error("Status message element not found");
   }
-    statusMessage.textContent = `${text}`; 
+  statusMessage.textContent = `${text}`;
+  clearStatusMessage();
+  if (addClass) { 
+    statusMessage.classList.add(addClass);
+  }
   if (text && text.trim().length > 0) {
     statusMessage.classList.remove('hidden');
   } else {
     statusMessage.classList.add('hidden');
   }
+}
+
+export function clearStatusMessage() {
+  const statusMessage = fetchElementById('statusMessage', HTMLDivElement);
+  if (!statusMessage) {
+    throw new Error("Status message element not found");
+  }
+  const msgStatuses = ["win", "draw", "turn"];
+  msgStatuses.forEach( msgStatus => {
+    statusMessage.classList.remove(msgStatus)
+  });
 }
