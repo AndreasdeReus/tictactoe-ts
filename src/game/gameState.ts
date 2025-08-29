@@ -99,16 +99,10 @@ export function makeMove(index: number): boolean {
   return true;
 }
 
-function getOpponent(player: Player): Player{
+export function getOpponent(player: Player): Player{
   return player === 'X' ? 'O' : 'X';
 }
 
 export function setCheatsEnabled(enabled: boolean) {
   gameState.cheatsEnabled = enabled;
 }
-
-(window as any).ttt = {
-    setCheatsEnabled,
-    resetGame,
-    setDifficulty,
-};

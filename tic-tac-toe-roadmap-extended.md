@@ -59,8 +59,8 @@ A structured checklist to guide the development of your TypeScript-based Tic Tac
 
 ## 🧪 Phase 7: Testing
 
-- [ ] Set up test framework (e.g., Vitest or Jest)
-- [ ] Write unit tests for `gameRules.ts`
+- [x] Set up test framework (e.g., Vitest or Jest)
+- [x] Write unit tests for `gameRules.ts`
 - [ ] Write unit tests for `bot.ts`
 - [ ] Write integration tests for user interactions
 - [ ] Add basic end-to-end test (e.g., using Playwright or Cypress)

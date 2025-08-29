@@ -1,7 +1,13 @@
 import { setupEventListeners } from './ui/events';
-import { setupGame } from './game/gameState';
+import { resetGame, setCheatsEnabled, setDifficulty, setupGame } from './game/gameState';
 import { setupThemeToggle } from "./ui/theme"; 
 
 setupEventListeners(); 
 setupThemeToggle();
 setupGame();
+
+(window as any).ttt = {
+    setCheatsEnabled,
+    resetGame,
+    setDifficulty,
+};

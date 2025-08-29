@@ -21,7 +21,7 @@ export function checkWinner(cells: Cell[]): [Player | null, winningLine?: number
       return [cells[a] as Player, [a, b, c]];
     }
   }
-  return [null, []];
+  return [null, undefined];
 }
 
 export function checkDraw(cells: Cell[]): boolean {
@@ -37,7 +37,7 @@ export function evaluateBoard(cells: Cell[]): EvaluateBoardResult{
   const isDraw = false;
   if (winner) return { winner, isDraw, winningLine };
   else if (checkDraw(cells)) {
-    return { winner: null, isDraw: true, winningLine: [] };
+    return { winner: null, isDraw: true, winningLine: undefined };
   }
-  return { winner: null, isDraw: false, winningLine: [] };
+  return { winner: null, isDraw: false, winningLine: undefined };
 }
