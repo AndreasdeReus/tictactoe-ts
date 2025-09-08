@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest"
-import { checkDraw, checkWinner } from "../src/game/gameRules";
+import { checkDraw, checkWinner } from "../../src/game/gameRules";
 
-import type { Cell } from "../src/types/types";
+import type { Cell } from "../../src/types/types";
 
 describe("checkWinner", () => {
     describe("rows", () => {

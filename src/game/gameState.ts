@@ -22,6 +22,7 @@ let AIPlayer: Player | null;
 
 
 export function setupGame(): void {
+  gameState.difficulty = "noAI"
   resetGame();
 }
 
