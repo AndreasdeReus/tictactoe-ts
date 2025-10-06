@@ -9,7 +9,7 @@ import { showDrawMessage, showTurnMessage, showWinMessage } from "../../src/ui/m
 import { setupEventListeners } from "../../src/ui/events";
 import { setupGame } from "../../src/game/gameState";
 
-// We’ll assume your game starts with X and “no AI” for a pure manual flow.
+// Assume game starts with X and “no AI” for a pure manual flow.
 
 describe("UI click-flow", () => {
   beforeEach(() => {
