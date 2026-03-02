@@ -69,8 +69,7 @@ A structured checklist to guide the development of your TypeScript-based Tic Tac
 
 ## 📚 Phase 8: Documentation
 
-- [ ] Add README.md with project overview and setup instructions
-- [ ] Document all functions in code using comments or JSDoc
+- [x] Add README.md with project overview and setup instructions
 - [ ] Create architecture overview (folder structure explanation)
 - [ ] Add usage instructions for different modes (human vs human, vs AI)
 - [ ] Include contribution guidelines (if open source)

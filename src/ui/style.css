@@ -165,3 +165,9 @@ body[data-theme="dark"] {
     --color-draw: #fbbf24;
     --color-win-text: #22c55e;
 }
+
+html,
+body {
+    margin: 0;
+    padding: 0;
+}
